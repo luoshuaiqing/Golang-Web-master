@@ -3,6 +3,10 @@ postgres:
 createdb:
 	docker exec -it postgres-udemy createdb --username=shuaiqingluo --owner=shuaiqingluo simple_bank
 dropdb:
-	docker exec -it postgres-udemy dropdb simple_bank
+	docker exec -it postgres-udemy dropdb --username=shuaiqingluo simple_bank
+migrateup:
+	migrate -path db/migration -database "postgresql://shuaiqingluo:mysecretpassword@localhost:5432/simple_bank?sslmode=disable" -verbose up
+migratedown:
+	migrate -path db/migration -database "postgresql://shuaiqingluo:mysecretpassword@localhost:5432/simple_bank?sslmode=disable" -verbose down
 .PHONY:
-	postgres createdb dropdb
+	postgres createdb dropdb migrateup migratedown
